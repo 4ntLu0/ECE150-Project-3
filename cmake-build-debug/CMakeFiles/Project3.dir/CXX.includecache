@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+I:/UW Yaer 1/ECE150/Project3/geesespotter.h
+
+I:/UW Yaer 1/ECE150/Project3/geesespotter_lib.cpp
+cstdlib
+-
+iostream
+-
+cctype
+-
+ctime
+-
+geesespotter_lib.h
+I:/UW Yaer 1/ECE150/Project3/geesespotter_lib.h
+geesespotter.h
+I:/UW Yaer 1/ECE150/Project3/geesespotter.h
+
+I:/UW Yaer 1/ECE150/Project3/geesespotter_lib.h
+iostream
+-
+

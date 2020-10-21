@@ -5,7 +5,6 @@
 #include "geesespotter_lib.h"
 #include "geesespotter.h"
 
-
 int main()
 {
   srand(time(NULL));

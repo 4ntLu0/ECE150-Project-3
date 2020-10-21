@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Project3.dir/geesespotter.cpp.obj"
   "CMakeFiles/Project3.dir/geesespotter_lib.cpp.obj"
   "Project3.exe"
   "Project3.exe.manifest"

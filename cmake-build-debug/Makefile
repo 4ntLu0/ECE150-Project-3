@@ -142,6 +142,33 @@ Project3/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Project3.dir\build.make CMakeFiles/Project3.dir/build
 .PHONY : Project3/fast
 
+geesespotter.obj: geesespotter.cpp.obj
+
+.PHONY : geesespotter.obj
+
+# target to build an object file
+geesespotter.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Project3.dir\build.make CMakeFiles/Project3.dir/geesespotter.cpp.obj
+.PHONY : geesespotter.cpp.obj
+
+geesespotter.i: geesespotter.cpp.i
+
+.PHONY : geesespotter.i
+
+# target to preprocess a source file
+geesespotter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Project3.dir\build.make CMakeFiles/Project3.dir/geesespotter.cpp.i
+.PHONY : geesespotter.cpp.i
+
+geesespotter.s: geesespotter.cpp.s
+
+.PHONY : geesespotter.s
+
+# target to generate assembly for a file
+geesespotter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Project3.dir\build.make CMakeFiles/Project3.dir/geesespotter.cpp.s
+.PHONY : geesespotter.cpp.s
+
 geesespotter_lib.obj: geesespotter_lib.cpp.obj
 
 .PHONY : geesespotter_lib.obj
@@ -178,6 +205,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Project3
+	@echo ... geesespotter.obj
+	@echo ... geesespotter.i
+	@echo ... geesespotter.s
 	@echo ... geesespotter_lib.obj
 	@echo ... geesespotter_lib.i
 	@echo ... geesespotter_lib.s

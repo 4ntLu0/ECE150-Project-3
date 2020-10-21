@@ -82,6 +82,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="I:/UW Yaer 1/ECE150/Project3/geesespotter.cpp">
+			<Option target="Project3"/>
+		</Unit>
 		<Unit filename="I:/UW Yaer 1/ECE150/Project3/geesespotter.h">
 			<Option target="Project3"/>
 		</Unit>

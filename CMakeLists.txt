@@ -9,4 +9,4 @@ add_executable(Project3
         geesespotter.h
         geesespotter_lib.cpp
         geesespotter_lib.h
-        project3-geesespotter.pdf)
+        project3-geesespotter.pdf geesespotter.cpp)
