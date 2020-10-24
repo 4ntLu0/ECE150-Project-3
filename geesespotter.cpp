@@ -106,22 +106,25 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
     int row{};
     int col{};
     int neighbours{};
+    char *newBoard{new char[xdim * ydim]};
+    for (int i{0}; i <(xdim*ydim); ++i) {
+        newBoard[i] = 0x00;
+    }
+
     for (int i{0}; i < (xdim * ydim); ++i) {
-        /*
-         *  NW DN NE
-         *  DW CR DE
-         *  SW DS SE
-         */
+//
+//         *  NW DN NE
+//         *  DW CR DE
+//         *  SW DS SE
+//
         // can you add? ^ find the value for each. if there is a neighobur that is a geese, add 1 to the count. Go through the neighoburs, and check to ensure that hey're in bound.
 
         row = i / xdim; // how many times have we travelled the full board across?
         col = i % xdim; // how far are we on this traversal?
 
-        char *newBoard{new char[xdim * ydim]};
-
         if (board[i] == 9) {
             // do nothing
-            newBoard[i] == 9; // geese here.
+            newBoard[i] = 9;
         } else {
             if (row == 0) {
                 // not allowed to have north neighbours.
@@ -175,12 +178,12 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
                 }
             }
         }
-//        for (int i{0}; i < (xdim * ydim); ++i) {
-//            board[i] = newBoard[i];
-//        }
+
 
     }
-
+    for (int i{0}; i < (xdim * ydim); ++i) {
+        board[i] = newBoard[i];
+    }
 }
 
 void hideBoard(char *board, std::size_t xdim, std::size_t ydim) {
