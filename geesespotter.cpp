@@ -82,10 +82,85 @@ int NW(char *board, std::size_t xdim, int i) {
     }
 }
 
+int TL(char *board, std::size_t xdim) {
+    if (board[0] == 9) {
+        return 9;
+    }
+    int nums{0};
+    if (board[1] == 9) {
+        nums += 1;
+    }
+    if (board[xdim] == 9) {
+        nums += 1;
+    }
+    if (board[xdim + 1] == 9) {
+        nums += 1;
+    }
+    std::cout << "TopLeft Neighoburs: " << nums << std::endl;
+    return nums;
+}
+
+int TR(char *board, std::size_t xdim) {
+    if (board[xdim - 1] == 9) {
+        return 9;
+    }
+    int nums{0};
+    if (board[xdim - 2] == 9) {
+        nums += 1;
+    }
+    if (board[2 * xdim - 1] == 9) { //xdim-1 is TR row. add XDIM to get one below.
+        nums += 1;
+    }
+    if (board[2 * xdim - 2] == 9) { // see above, but now we move one left.
+        nums += 1;
+    }
+    std::cout << "TopRight Neighbours: " << nums << std::endl;
+    return nums;
+}
+
+int BL(char *board, std::size_t xdim, std::size_t ydim) {
+    int pos = (xdim * ydim - xdim);
+    if (board[pos] == 9) {
+        return 9;
+    }
+    int nums{};
+    if (board[pos - xdim] == 9) { // directly above pos
+        nums += 1;
+    }
+    if (board[pos - xdim + 1] == 9) { //to the right and above
+        nums += 1;
+    }
+    if (board[pos + 1] == 9) { // to the right
+        nums += 1;
+    }
+    std::cout << "BottomLeft Neighbours: " << nums << std::endl;
+    return nums;
+}
+
+int BR(char *board, std::size_t xdim, std::size_t ydim) {
+    int pos = (xdim * ydim - 1);
+    if (board[pos] == 9) {
+        return 9;
+    }
+    int nums{};
+    if (board[pos - xdim] == 9) { //right above
+        nums += 1;
+    }
+    if (board[pos - xdim - 1] == 9) { //diagonal above to left
+        nums += 1;
+    }
+    if (board[pos - 1] == 9) { // directly to left
+        nums += 1;
+    }
+    std::cout << "BottomRight Neigbours: " << nums << std::endl;
+    return nums;
+}
+
+
 char *createBoard(std::size_t xdim, std::size_t ydim) {
 
     char *board{new char[xdim * ydim]};
-    for (int i{0}; i < (xdim*ydim); ++i) {
+    for (int i{0}; i < (xdim * ydim); ++i) {
         board[i] = 0x00;
     }
 
@@ -102,89 +177,87 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
     /*
      * 01234
      * 56789
+     *
+     * 0123
+     * 4567
      */
     int row{};
     int col{};
     int neighbours{};
-    char *newBoard{new char[xdim * ydim]};
-    for (int i{0}; i <(xdim*ydim); ++i) {
+
+    char *newBoard = new char[xdim * ydim];
+    for (int i{0}; i < (xdim * ydim); ++i) {
         newBoard[i] = 0x00;
     }
 
-    for (int i{0}; i < (xdim * ydim); ++i) {
-//
-//         *  NW DN NE
-//         *  DW CR DE
-//         *  SW DS SE
-//
-        // can you add? ^ find the value for each. if there is a neighobur that is a geese, add 1 to the count. Go through the neighoburs, and check to ensure that hey're in bound.
+    // can try to solve corner cases, then do inner suite.
 
-        row = i / xdim; // how many times have we travelled the full board across?
-        col = i % xdim; // how far are we on this traversal?
+    //solve (0,0)
+    board[0] = TL(board, xdim);
+    //solve (xdim, 0)
+    board[xdim - 1] = TR(board, xdim);
+    //solve (0, ydim) <- ydim * xdim - xdim.
+    board[xdim * ydim - xdim] = BL(board, xdim, ydim);
+    //solve (xdim, ydim) <- xdim * ydim - 1
+    board[xdim * ydim - 1] = BR(board, xdim, ydim);
 
-        if (board[i] == 9) {
-            // do nothing
-            newBoard[i] = 9;
+
+    int nums{};
+    int pos{};
+    // solve inner upper row
+    for (pos = 1; pos < (xdim - 2); ++pos) {
+        nums = 0;
+        if (board[pos] == 9) {
+            newBoard[pos] = 9;
         } else {
-            if (row == 0) {
-                // not allowed to have north neighbours.
-                if (col == 0) {
-                    // not allowed to have west neighbours?
-                    // DE SE DS
-                    newBoard[i] = DE(board, xdim, i) + SE(board, xdim, i) + DS(board, xdim, i);
-                } else if (col == (xdim - 1)) {
-                    // not allowed to have east neighbours
-                    // DW SW DS
-                    newBoard[i] = DW(board, xdim, i) + SW(board, xdim, i) + DS(board, xdim, i);
-                } else {
-                    // allowed to have neighbours s/w
-                    // DW SW DS SE DE
-                    newBoard[i] = DW(board, xdim, i) + SW(board, xdim, i) + DS(board, xdim, i) + SE(board, xdim, i) +
-                                  DE(board, xdim, i);
-                }
-            } else if (row == (ydim - 1)) {
-                //not allowed to have south neighbours
-                if (col == 0) {
-                    // not allowed to have west neighbours?
-                    // DN NE DE
-                    newBoard[i] = DN(board, xdim, i) + NE(board, xdim, i) + DE(board, xdim, i);
-                } else if (col == (xdim - 1)) {
-                    // not allowed to have east neighbours
-                    // DW NW DN
-                    newBoard[i] = DW(board, xdim, i) + NW(board, xdim, i) + DN(board, xdim, i);
-                } else {
-                    // allowed to have neighbours s/w
-                    // DW NW DN NE DE
-                    newBoard[i] = DW(board, xdim, i) + NW(board, xdim, i) + DN(board, xdim, i) + NE(board, xdim, i) +
-                                  NE(board, xdim, i) + DE(board, xdim, i);
-                }
-            } else {
-//            no restrictions vertically
-                if (col == 0) {
-                    // not allowed to have west neighbours?
-                    // DN NE DE SE DS
-                    newBoard[i] = DN(board, xdim, i) + NE(board, xdim, i) + DE(board, xdim, i) + SE(board, xdim, i) +
-                                  DS(board, xdim, i);
-                } else if (col == (xdim - 1)) {
-                    // not allowed to have east neighbours
-                    // DN NW DW SW DS
-                    newBoard[i] = DN(board, xdim, i) + NW(board, xdim, i) + DW(board, xdim, i) + SW(board, xdim, i) +
-                                  DS(board, xdim, i);
-                } else {
-                    // allowed to have neighbours in every direction.
-                    // DN NE DE SE DS SW DW NW
-                    newBoard[i] = DN(board, xdim, i) + NE(board, xdim, i) + DE(board, xdim, i) + SE(board, xdim, i) +
-                                  DS(board, xdim, i) + SW(board, xdim, i) + DW(board, xdim, i) + NW(board, xdim, i);
-                }
+            if (board[pos - 1] == 9) { // to the left
+                nums += 1;
             }
+            if (board[pos + 1] == 9) { // to the right
+                nums += 1;
+            }
+            if (board[pos + xdim] == 9) { // below
+                nums += 1;
+            }
+            if (board[pos + xdim - 1] == 9) { //below to left
+                nums += 1;
+            }
+            if (board[pos + xdim + 1] == 9) { //below to right
+                nums += 1;
+            }
+            board[pos] = (char) nums;
         }
-
-
     }
-    for (int i{0}; i < (xdim * ydim); ++i) {
-        board[i] = newBoard[i];
+
+    // solve lower row?
+    for (pos = xdim * ydim - xdim + 1; pos < (xdim * ydim - 2); ++pos) {
+        nums = 0;
+        if (board[pos] == 9) {
+            board[pos] = 9;
+        } else {
+            if (board[pos - 1] == 9) { // to the left
+                nums += 1;
+            }
+            if (board[pos + 1] == 9) { // to the right
+                nums += 1;
+            }
+            if (board[pos - xdim] == 9) { // directly above
+                nums += 1;
+            }
+            if (board[pos - xdim - 1] == 9) { // above and to the left
+                nums += 1;
+            }
+            if (board[pos - xdim + 1] == 9) { // above and to the right
+                nums += 1;
+            }
+            board[pos] = (char) nums;
+        }
     }
-}
+
+        delete[] newBoard;
+        newBoard = nullptr;
+    }
+
 
 void hideBoard(char *board, std::size_t xdim, std::size_t ydim) {
     for (int i{0}; i < (xdim * ydim); ++i) {
@@ -194,6 +267,8 @@ void hideBoard(char *board, std::size_t xdim, std::size_t ydim) {
 }
 
 void cleanBoard(char *board) {
+    delete[] board;
+    board = nullptr;
 };
 
 void printBoard(char *board, std::size_t xdim, std::size_t ydim) {
@@ -202,7 +277,7 @@ void printBoard(char *board, std::size_t xdim, std::size_t ydim) {
     */
 
     for (int print_index{0}; print_index < (xdim * ydim); ++print_index) {
-        if ((print_index % 5) == 0) {
+        if ((print_index % xdim) == 0) {
             std::cout << std::endl;
         }
         if (board[print_index] & markedBit()) { // or == markedBit(); - in c++ any non-zero = true, 0 = false.
