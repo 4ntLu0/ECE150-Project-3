@@ -10,78 +10,6 @@
 #include "geesespotter.h"
 
 //my helper funcs
-int DN(char *board, std::size_t xdim, int i) {
-    int pos = i - xdim;
-    if (board[pos] == 9) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int NE(char *board, std::size_t xdim, int i) {
-    int pos = i - xdim + 1;
-    if (board[pos] == 9) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int DE(char *board, std::size_t xdim, int i) {
-    int pos = i + 1;
-    if (board[pos] == 9) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int SE(char *board, std::size_t xdim, int i) {
-    int pos = i + xdim + 1;
-    if (board[pos] == 9) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int DS(char *board, std::size_t xdim, int i) {
-    int pos = i + xdim;
-    if (board[pos] == 0) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int SW(char *board, std::size_t xdim, int i) {
-    int pos = i + xdim - 1;
-    if (board[pos] == 9) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int DW(char *board, std::size_t xdim, int i) {
-    int pos = i - 1;
-    if (board[pos] == 9) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int NW(char *board, std::size_t xdim, int i) {
-    int pos = i - xdim - 1;
-    if (board[pos] == 9) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
 int TL(char *board, std::size_t xdim) {
     if (board[0] == 9) {
         return 9;
@@ -186,12 +114,12 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
      *
      * 0123
      * 4567
-     *  1  2  3  4  5  6  7
-     1 00 01 02 03 04 05 06
-     2 07 08 09 10 11 12 13
-     3 14 15 16 17 18 19 20
-     4 21 22 23 24 25 26 27
-     5 28 29 30 31 32 33 34
+     *  0  1  2  3  4  5  6
+     0 00 01 02 03 04 05 06
+     1 07 08 09 10 11 12 13
+     2 14 15 16 17 18 19 20
+     3 21 22 23 24 25 26 27
+     4 28 29 30 31 32 33 34
      */
     int row{};
     int col{};
@@ -208,13 +136,13 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
     //solve (xdim, ydim) <- xdim * ydim - 1
     board[xdim * ydim - 1] = BR(board, xdim, ydim);
 
-    std::cout << "done calculating edges" << std::endl;
+//    std::cout << "done calculating edges" << std::endl;
 
     int nums{};
     int pos{};
     // solve inner upper row
     for (pos = 1; pos < (xdim - 1); ++pos) {
-        std::cout << "solving upper edge with pos: " << pos << "// ";
+//        std::cout << "solving upper edge with pos: " << pos << "// ";
         nums = 0;
         if (board[pos] == 9) {
             board[pos] = 9;
@@ -237,13 +165,13 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
             board[pos] = (char) nums;
         }
     }
-    std::cout << std::endl;
-    std::cout << "solved upper row" << std::endl << "--------------------" << std::endl;
+//    std::cout << std::endl;
+//    std::cout << "solved upper row" << std::endl << "--------------------" << std::endl;
 
     // solve lower row?
     for (pos = xdim * ydim - xdim + 1; pos < (xdim * ydim - 1); ++pos) {
         nums = 0;
-        std::cout << "solving lower edge with pos: " << pos << "// ";
+//        std::cout << "solving lower edge with pos: " << pos << "// ";
         if (board[pos] == 9) {
             board[pos] = 9;
         } else {
@@ -265,14 +193,14 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
             board[pos] = (char) nums;
         }
     }
-    std::cout << std::endl;
-    std::cout << "solved bottom row" << std::endl << "--------------------" << std::endl;
+//    std::cout << std::endl;
+//    std::cout << "solved bottom row" << std::endl << "--------------------" << std::endl;
 
     //solve left edge
     for (pos = xdim; pos < xdim * ydim - xdim - 1; pos += xdim) {
         nums = 0;
         // i think this works.
-        std::cout << "solving left edge with pos: " << pos << "// ";
+//        std::cout << "solving left edge with pos: " << pos << "// ";
         if (board[pos] == 9) {
             board[pos] = 9; // this should be removed later.
         } else {
@@ -294,13 +222,13 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
             board[pos] = (char) nums;
         }
     }
-    std::cout << std::endl;
-    std::cout << "solved left edge" << std::endl << "--------------------" << std::endl;
+//    std::cout << std::endl;
+//    std::cout << "solved left edge" << std::endl << "--------------------" << std::endl;
 
     //solve right edge
     for (pos = (xdim - 1 + xdim); pos < xdim * ydim - 2; pos += xdim) {
         nums = 0;
-        std::cout << "solving right edge with pos: " << pos << "// ";
+//        std::cout << "solving right edge with pos: " << pos << "// ";
         if (board[pos] == 9) {
             board[pos] = 9;
         } else {
@@ -322,8 +250,8 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
             board[pos] = (char) nums;
         }
     }
-    std::cout << std::endl;
-    std::cout << "solved right edge" << std::endl << "--------------------" << std::endl;
+//    std::cout << std::endl;
+//    std::cout << "solved right edge" << std::endl << "--------------------" << std::endl;
 
     int i{};
     int curpos{};
@@ -331,32 +259,32 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
         for (i = 0; i < (xdim - 2); i++) { //iterates horizontally
             curpos = pos + i;
             nums = 0;
-            std::cout << "solving general case with curpos: " << curpos << "//- ";
+//            std::cout << "solving general case with curpos: " << curpos << "//- ";
             if (board[curpos] == 9) {
                 board[curpos] = 9;
             } else {
-                if (board[curpos -1] == 9) {
+                if (board[curpos - 1] == 9) {
                     nums += 1;
                 }
-                if (board[curpos + 1] == 9){
+                if (board[curpos + 1] == 9) {
                     nums += 1;
                 }
-                if (board [curpos + xdim] == 9) {
+                if (board[curpos + xdim] == 9) {
                     nums += 1;
                 }
-                if (board [curpos - xdim] == 9) {
+                if (board[curpos - xdim] == 9) {
                     nums += 1;
                 }
-                if (board [curpos -xdim-1]==9) {
+                if (board[curpos - xdim - 1] == 9) {
                     nums += 1;
                 }
-                if (board [curpos-xdim+1] == 9) {
+                if (board[curpos - xdim + 1] == 9) {
                     nums += 1;
                 }
-                if (board[curpos+xdim-1] == 9 ){
+                if (board[curpos + xdim - 1] == 9) {
                     nums += 1;
                 }
-                if (board[curpos+xdim+1] == 9 ){
+                if (board[curpos + xdim + 1] == 9) {
                     nums += 1;
                 }
                 board[curpos] = (char) nums;
@@ -369,7 +297,7 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
 
 void hideBoard(char *board, std::size_t xdim, std::size_t ydim) {
     for (int i{0}; i < (xdim * ydim); ++i) {
-//        board[i] += 0x20; // this will hide the board if enabled.
+        board[i] += 0x20; // this will hide the board if enabled.
     }
 
 }
@@ -403,7 +331,48 @@ void printBoard(char *board, std::size_t xdim, std::size_t ydim) {
 }
 
 int reveal(char *board, std::size_t xdim, std::size_t ydim, std::size_t xloc, std::size_t yloc) {
+    /*
+     * returns 1 if field is mark
+     * returns 2 if field is already revealed
+     * return 9 if field contains a goose
+     * return 0 otherwise.
+     */
+    int pos = xdim * (yloc) + xloc; // have to find the position in terms of the array
+    if ((board[pos] & markedBit()) == markedBit()) {
+        return 1;
+    } else if ((board[pos] & 0x0f) == board[pos]) {
+        return 2;
+    } else if (board[pos] == 9) {
+        return 9;
+    }
+    board[pos] = board[pos] & 0xf;
+    if (board[pos] == 0) {
 
+        if ((xloc != 1)) {
+            reveal(board, xdim, ydim, xloc - 1, yloc);
+        }
+        if ((xloc != xdim)) {
+            reveal(board, xdim, ydim, xloc + 1, yloc);
+        }
+        if (yloc != 1) {
+            reveal(board, xdim, ydim, xloc, yloc - 1);
+        }
+        if (yloc != ydim) {
+            reveal(board, xdim, ydim, xloc, yloc + 1);
+        }
+        if ((xloc != 1) && (yloc != 1)) {
+            reveal(board, xdim, ydim, xloc - 1, yloc - 1);
+        }
+        if ((xloc != 1) && (yloc != ydim)) {
+            reveal(board, xdim, ydim, xloc - 1, yloc + 1);
+        }
+        if ((xloc != xdim) && (yloc != ydim)) {
+            reveal(board, xdim, ydim, xloc + 1, yloc + 1);
+        }
+        if ((xloc != xdim) && (yloc != 1)) {
+            reveal(board, xdim, ydim, xloc + 1, yloc - 1);
+        }
+    }
     return 0;
 }
 
