@@ -176,19 +176,26 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
 
     /*
      * 01234
-     * 56789
+     * 56789 - 10
+     *
+     * 01
+     * 23
+     * 45
+     * 67 - 8
+     *
      *
      * 0123
      * 4567
+     *  1  2  3  4  5  6  7
+     1 00 01 02 03 04 05 06
+     2 07 08 09 10 11 12 13
+     3 14 15 16 17 18 19 20
+     4 21 22 23 24 25 26 27
+     5 28 29 30 31 32 33 34
      */
     int row{};
     int col{};
     int neighbours{};
-
-    char *newBoard = new char[xdim * ydim];
-    for (int i{0}; i < (xdim * ydim); ++i) {
-        newBoard[i] = 0x00;
-    }
 
     // can try to solve corner cases, then do inner suite.
 
@@ -201,14 +208,16 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
     //solve (xdim, ydim) <- xdim * ydim - 1
     board[xdim * ydim - 1] = BR(board, xdim, ydim);
 
+    std::cout << "done calculating edges" << std::endl;
 
     int nums{};
     int pos{};
     // solve inner upper row
-    for (pos = 1; pos < (xdim - 2); ++pos) {
+    for (pos = 1; pos < (xdim - 1); ++pos) {
+        std::cout << "solving upper edge with pos: " << pos << "// ";
         nums = 0;
         if (board[pos] == 9) {
-            newBoard[pos] = 9;
+            board[pos] = 9;
         } else {
             if (board[pos - 1] == 9) { // to the left
                 nums += 1;
@@ -228,10 +237,13 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
             board[pos] = (char) nums;
         }
     }
+    std::cout << std::endl;
+    std::cout << "solved upper row" << std::endl << "--------------------" << std::endl;
 
     // solve lower row?
-    for (pos = xdim * ydim - xdim + 1; pos < (xdim * ydim - 2); ++pos) {
+    for (pos = xdim * ydim - xdim + 1; pos < (xdim * ydim - 1); ++pos) {
         nums = 0;
+        std::cout << "solving lower edge with pos: " << pos << "// ";
         if (board[pos] == 9) {
             board[pos] = 9;
         } else {
@@ -253,15 +265,111 @@ void computeNeighbors(char *board, std::size_t xdim, std::size_t ydim) {
             board[pos] = (char) nums;
         }
     }
+    std::cout << std::endl;
+    std::cout << "solved bottom row" << std::endl << "--------------------" << std::endl;
 
-        delete[] newBoard;
-        newBoard = nullptr;
+    //solve left edge
+    for (pos = xdim; pos < xdim * ydim - xdim - 1; pos += xdim) {
+        nums = 0;
+        // i think this works.
+        std::cout << "solving left edge with pos: " << pos << "// ";
+        if (board[pos] == 9) {
+            board[pos] = 9; // this should be removed later.
+        } else {
+            if (board[pos + 1] == 9) { // to the right
+                nums += 1;
+            }
+            if (board[pos - xdim] == 9) { // directly above
+                nums += 1;
+            }
+            if (board[pos - xdim + 1] == 9) { // above and to the right
+                nums += 1;
+            }
+            if (board[pos + xdim] == 9) { //directly below
+                nums += 1;
+            }
+            if (board[pos + xdim + 1] == 9) { // below and to the right
+                nums += 1;
+            }
+            board[pos] = (char) nums;
+        }
     }
+    std::cout << std::endl;
+    std::cout << "solved left edge" << std::endl << "--------------------" << std::endl;
+
+    //solve right edge
+    for (pos = (xdim - 1 + xdim); pos < xdim * ydim - 2; pos += xdim) {
+        nums = 0;
+        std::cout << "solving right edge with pos: " << pos << "// ";
+        if (board[pos] == 9) {
+            board[pos] = 9;
+        } else {
+            if (board[pos - 1] == 9) { // to the left
+                nums += 1;
+            }
+            if (board[pos - xdim] == 9) { // above
+                nums += 1;
+            }
+            if (board[pos + xdim] == 9) { // below
+                nums += 1;
+            }
+            if (board[pos - xdim - 1] == 9) { // diag to left and above
+                nums += 1;
+            }
+            if (board[pos + xdim - 1] == 9) { // diag to left and below
+                nums += 1;
+            }
+            board[pos] = (char) nums;
+        }
+    }
+    std::cout << std::endl;
+    std::cout << "solved right edge" << std::endl << "--------------------" << std::endl;
+
+    int i{};
+    int curpos{};
+    for (pos = xdim + 1; pos < xdim * ydim - xdim - 1; pos += xdim) { // this will just iterate through all the rows.
+        for (i = 0; i < (xdim - 2); i++) { //iterates horizontally
+            curpos = pos + i;
+            nums = 0;
+            std::cout << "solving general case with curpos: " << curpos << "//- ";
+            if (board[curpos] == 9) {
+                board[curpos] = 9;
+            } else {
+                if (board[curpos -1] == 9) {
+                    nums += 1;
+                }
+                if (board[curpos + 1] == 9){
+                    nums += 1;
+                }
+                if (board [curpos + xdim] == 9) {
+                    nums += 1;
+                }
+                if (board [curpos - xdim] == 9) {
+                    nums += 1;
+                }
+                if (board [curpos -xdim-1]==9) {
+                    nums += 1;
+                }
+                if (board [curpos-xdim+1] == 9) {
+                    nums += 1;
+                }
+                if (board[curpos+xdim-1] == 9 ){
+                    nums += 1;
+                }
+                if (board[curpos+xdim+1] == 9 ){
+                    nums += 1;
+                }
+                board[curpos] = (char) nums;
+            }
+        }
+        std::cout << std::endl;
+    }
+}
 
 
 void hideBoard(char *board, std::size_t xdim, std::size_t ydim) {
     for (int i{0}; i < (xdim * ydim); ++i) {
-//        board[i] += 0x20;
+//        board[i] += 0x20; // this will hide the board if enabled.
     }
 
 }
@@ -290,6 +398,7 @@ void printBoard(char *board, std::size_t xdim, std::size_t ydim) {
         }
 
     }
+    std::cout << std::endl;
 
 }
 
