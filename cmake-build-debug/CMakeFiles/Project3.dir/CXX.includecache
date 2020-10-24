@@ -6,9 +6,7 @@
 
 #IncludeRegexTransform: 
 
-I:/UW Yaer 1/ECE150/Project3/geesespotter.h
-
-I:/UW Yaer 1/ECE150/Project3/geesespotter_lib.cpp
+I:/UW Yaer 1/ECE150/Project3/geesespotter.cpp
 cstdlib
 -
 iostream
@@ -20,6 +18,8 @@ ctime
 geesespotter_lib.h
 I:/UW Yaer 1/ECE150/Project3/geesespotter_lib.h
 geesespotter.h
+I:/UW Yaer 1/ECE150/Project3/geesespotter.h
+
 I:/UW Yaer 1/ECE150/Project3/geesespotter.h
 
 I:/UW Yaer 1/ECE150/Project3/geesespotter_lib.h
